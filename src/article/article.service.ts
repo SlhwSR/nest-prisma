@@ -22,7 +22,7 @@ export class ArticleService {
       take:+page?.pageSize?+page?.pageSize:10,
       skip:(page?.current-1)*page?.pageSize+1,
       orderBy:{
-        id:'desc'
+        id:"asc"
         // content:"asc",
       }
     })
@@ -38,20 +38,22 @@ export class ArticleService {
     return result;
   }
   async findSome(title:string){
-    console.log(title);
     const result =await this.prisma.article.findMany({
       where:{
         title:{ 
            contains:title
-        } 
-      }
+        },
+      },
+      orderBy:{
+        id:"asc"
+      } 
     })
     return result
   }
   async update(id: number, updateArticleDto: UpdateArticleDto) {
    const result= await this.prisma.article.update({
         where:{
-          id:id
+          id
         },
         data:{
           ...updateArticleDto
