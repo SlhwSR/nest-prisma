@@ -11,8 +11,8 @@ export class UserController {
   //jwt.strategy.ts 中 validate结果会保存到req请求数据中
   @UseGuards(AuthGuard('jwt'))
   @Get(':id')
- findOne(@Req() req:Request) { 
+  findOne(@Req() req:Request) { 
     console.log(req);
     return req?.user; 
-  } 
+  }   
 }
