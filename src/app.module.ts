@@ -8,12 +8,13 @@ import { AuthModule } from './auth/auth.module';
 import { UserModule } from './user/user.module';
 import { PrismaService } from './prisma/prisma.service';
 import { PrismaModule } from './prisma/prisma.module';
+import { UploadModule } from './upload/upload.module';
 
 @Module({
   imports: [ArticleModule, AuthModule,ConfigModule.forRoot({
     load:[],
     isGlobal:true
-  }), UserModule, PrismaModule],
+  }), UserModule, PrismaModule, UploadModule],
   controllers: [AppController],
   providers: [AppService, PrismaService],
 })
