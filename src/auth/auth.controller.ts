@@ -1,9 +1,11 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, Req } from '@nestjs/common';
+import { AuthGuard } from '@nestjs/passport';
 import { AuthService } from './auth.service';
+import { Auth } from './decorator/auth.decoator';
 import { LoginDto } from './dto/create-auth-login.dto';
 import { CreateAuthDto } from './dto/create-auth.dto';
 import { UpdateAuthDto } from './dto/update-auth.dto';
-
+import {Request} from 'express'
 @Controller('auth')
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
@@ -16,23 +18,10 @@ export class AuthController {
  login(@Body() data:LoginDto){
   return this.authService.login(data)
  }
-  @Get()
-  findAll() {
-    return this.authService.findAll();
+  @Get('all')
+  @Auth()
+  findAll(@Req() req:Request) {
+    return req.user
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) { 
-    return this.authService.findOne(+id);
-  }
-
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateAuthDto: UpdateAuthDto) {
-    return this.authService.update(+id, updateAuthDto);
-  }
-
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.authService.remove(+id);
-  }
 }

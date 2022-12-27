@@ -11,16 +11,20 @@ export class AuthService {
   create(createAuthDto: CreateAuthDto) {
     return 'This action adds a new auth';
   }
-  async register(createAuthDto:CreateAuthDto){
+  async register(createAuthDto:CreateAuthDto){ 
      const password=await argon2.hash(createAuthDto.password)
-     const user= this.PrismaService.user.create({
-       data:{
-        email:createAuthDto.email,
-        password
-       }
-     })
-     delete (await user).password
-     return user
+    try {
+      const user= this.PrismaService.user.create({
+        data:{
+         email:createAuthDto.email,
+         password
+        }
+      })
+      delete (await user).password
+      return user
+    } catch (error) { 
+      throw new BadRequestException("该邮箱已存在!")
+    } 
   }
   async login({email,password}:LoginDto){
      const user=await this.PrismaService.user.findUnique({
@@ -35,16 +39,18 @@ export class AuthService {
      return this.token(user)
   }
   async token(user){
+    console.log(user);
     return {
       token:await this.jwt.signAsync({
-        name:user.email,
+        email:user.email,
         sub:user.id
       })
     }
-  }
-  findAll() {
-    return `This action returns all auth`;
-  }
+  } 
+  async findAll() {
+    const result=this.PrismaService.user.findMany()
+    return result
+  } 
 
   findOne(id: number) {
     return `This action returns a #${id} auth`;
