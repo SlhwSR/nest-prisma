@@ -2,14 +2,13 @@ import { Injectable } from '@nestjs/common';
 import { CreateArticleDto } from './dto/create-article.dto';
 import { UpdateArticleDto } from './dto/update-article.dto';
 import {PrismaClient} from '@prisma/client'
+import { PrismaService } from 'src/prisma/prisma.service';
 @Injectable()
 export class ArticleService {
-  prisma:PrismaClient
-  constructor(){
-    this.prisma=new PrismaClient()
+  constructor(private PrismaService:PrismaService){
   }
   async create(createArticleDto: CreateArticleDto) {
-   const res=await this.prisma.article.create({
+   const res=await this.PrismaService.article.create({
       data:{
         ...createArticleDto
       }
@@ -18,7 +17,7 @@ export class ArticleService {
   } 
 
   async findAll(page) {
-    const result=await this.prisma.article.findMany({
+    const result=await this.PrismaService.article.findMany({
       take:+page?.pageSize?+page?.pageSize:10,
       skip:(page?.current-1)*page?.pageSize+1,
       orderBy:{
@@ -26,11 +25,11 @@ export class ArticleService {
         // content:"asc",
       }
     })
-    const total=await this.prisma.article.count()
+    const total=await this.PrismaService.article.count()
     return {data:[...result],total}; 
   }
   async findOne(id: number) {
-   const result=await this.prisma.article.findFirst({
+   const result=await this.PrismaService.article.findFirst({
     where:{
       id
     }
@@ -38,7 +37,7 @@ export class ArticleService {
     return result;
   }
   async findSome(title:string){
-    const result =await this.prisma.article.findMany({
+    const result =await this.PrismaService.article.findMany({
       where:{
         title:{ 
            contains:title
@@ -51,7 +50,7 @@ export class ArticleService {
     return result
   }
   async update(id: number, updateArticleDto: UpdateArticleDto) {
-   const result= await this.prisma.article.update({
+   const result= await this.PrismaService.article.update({
         where:{
           id
         },
@@ -63,7 +62,7 @@ export class ArticleService {
   }
 
   async remove(id: number) {
-    const result =await this.prisma.article.delete({
+    const result =await this.PrismaService.article.delete({
       where:{
         id
       }

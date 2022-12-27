@@ -1,22 +1,19 @@
 import { BadRequestException, Inject, Injectable } from '@nestjs/common';
 import { CreateAuthDto } from './dto/create-auth.dto';
 import { UpdateAuthDto } from './dto/update-auth.dto';
-import {PrismaClient} from '@prisma/client'
 import * as argon2 from 'argon2'
 import { LoginDto } from './dto/create-auth-login.dto';
 import {JwtService} from '@nestjs/jwt'
+import { PrismaService } from 'src/prisma/prisma.service';
 @Injectable()
 export class AuthService {
-  prisma:PrismaClient
-  constructor(private jwt:JwtService){
-    this.prisma=new PrismaClient()
-  }
+  constructor(private jwt:JwtService,private PrismaService:PrismaService){ }
   create(createAuthDto: CreateAuthDto) {
     return 'This action adds a new auth';
   }
   async register(createAuthDto:CreateAuthDto){
      const password=await argon2.hash(createAuthDto.password)
-     const user= this.prisma.user.create({
+     const user= this.PrismaService.user.create({
        data:{
         email:createAuthDto.email,
         password
@@ -26,7 +23,7 @@ export class AuthService {
      return user
   }
   async login({email,password}:LoginDto){
-     const user=await this.prisma.user.findUnique({
+     const user=await this.PrismaService.user.findUnique({
       where:{
         email
       } 
