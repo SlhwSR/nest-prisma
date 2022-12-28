@@ -7,20 +7,20 @@ import { JwtStrategy } from './jwt.strategy';
 import { PassportModule } from '@nestjs/passport';
 
 @Module({
-  imports:[
+  imports: [
     PassportModule,
     JwtModule.registerAsync({
-      imports:[ConfigModule],
-      inject:[ConfigService],
-      useFactory:(config:ConfigService)=>{
-       return {
-        secret:config.get('token_secret'),
-        signOptions:{expiresIn:'300d'}
-       }
-      }
-    })
+      imports: [ConfigModule],
+      inject: [ConfigService],
+      useFactory: (config: ConfigService) => {
+        return {
+          secret: config.get('token_secret'),
+          signOptions: { expiresIn: '300d' },
+        };
+      },
+    }),
   ],
   controllers: [AuthController],
-  providers: [ConfigService,AuthService,JwtStrategy] 
-}) 
+  providers: [ConfigService, AuthService, JwtStrategy],
+})
 export class AuthModule {}
