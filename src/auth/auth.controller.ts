@@ -9,7 +9,6 @@ import {Request} from 'express'
 @Controller('auth')
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
-
   @Post('register')
   create(@Body() createAuthDto: CreateAuthDto) {
     return this.authService.register(createAuthDto);
@@ -18,6 +17,7 @@ export class AuthController {
  login(@Body() data:LoginDto){
   return this.authService.login(data)
  }
+ 
   @Get('all')
   @Auth()
   findAll(@Req() req:Request) {

@@ -8,5 +8,6 @@ import { PassportModule } from '@nestjs/passport';
   imports:[PassportModule],
   controllers: [UserController],
   providers: [UserService,JwtStrategy]
-})
+})  
 export class UserModule {}
+  

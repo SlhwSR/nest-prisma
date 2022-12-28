@@ -45,7 +45,7 @@ export class AuthService {
         sub:user.id
       })
     }
-  } 
+  }  
   async findAll() {
     const result=this.PrismaService.user.findMany()
     return result

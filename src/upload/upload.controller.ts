@@ -1,4 +1,4 @@
-import { Controller, MethodNotAllowedException, Post, UploadedFile, UseInterceptors } from '@nestjs/common';
+import { Controller, Ip, MethodNotAllowedException, Post, Req, UploadedFile, UseInterceptors } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { Upload,fileFilter, Image, Document, Markdown } from './decorator/upload.decorator';
 
@@ -12,7 +12,8 @@ export class UploadController {
     @Post("document")
     // @Document()
     @Markdown('file',['image','pdf'])
-    uploadDoc(@UploadedFile() file:Express.Multer.File){
+    uploadDoc(@UploadedFile() file:Express.Multer.File,@Ip() ip){
+      // console.log(ip);
       return file
     }
 }
