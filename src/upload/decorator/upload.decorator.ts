@@ -23,7 +23,7 @@ export function Upload(field?:any,options?:MulterOptions){
 //-----根据返回装饰器定义各类文件类型
 export function Image(file='file'){
   return Upload(file,{
-        limits:{fileSize:Math.pow(1024,2)*3},
+        limits:{fileSize:Math.pow(1024,2)*10},
         fileFilter:fileFilter(['image'])
     })
 }
