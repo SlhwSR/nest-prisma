@@ -12,14 +12,14 @@ export class AuthController {
   @Post('register')
   create(@Body() createAuthDto: CreateAuthDto) {
     return this.authService.register(createAuthDto);
-  }
+  } 
   @Post("login")
- login(@Body() data:LoginDto){
+  login(@Body() data:LoginDto){
   return this.authService.login(data)
  }
- 
+
   @Get('all')
-  @Auth()
+  @Auth() 
   findAll(@Req() req:Request) {
     return req.user
   }
