@@ -8,7 +8,9 @@ import {
   Delete,
   Query,
   ParseIntPipe,
+  Req,
 } from '@nestjs/common';
+import { Request } from 'express';
 import { Auth } from 'src/auth/decorator/auth.decoator';
 import { ArticleService } from './article.service';
 import { CreateArticleDto } from './dto/create-article.dto';
@@ -41,5 +43,9 @@ export class ArticleController {
   @Delete(':id')
   remove(@Param('id') id: string) {
     return this.articleService.remove(+id);
+  }
+  @Get('personal')
+  getComt(@Req() req:Request){
+    return req.user
   }
 }

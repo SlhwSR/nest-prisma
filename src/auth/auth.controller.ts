@@ -22,5 +22,5 @@ export class AuthController {
   @Auth() 
   findAll(@Req() req:Request) {
     return req.user
-  }
+  }  
 }

@@ -34,7 +34,7 @@ export class ArticleService {
       },
     });
     return result;
-  }
+  } 
   async findSome(title: string) {
     const result = await this.PrismaService.article.findMany({
       where: {

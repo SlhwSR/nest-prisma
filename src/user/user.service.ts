@@ -1,9 +1,11 @@
 import { Injectable } from '@nestjs/common';
+import { PrismaService } from 'src/prisma/prisma.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 
 @Injectable()
 export class UserService {
+  constructor(private prismaService:PrismaService){}
   create(createUserDto: CreateUserDto) {
     return 'This action adds a new user';
   }
@@ -13,7 +15,15 @@ export class UserService {
   }
 
   findOne(id: number) {
-    return `This action returns a #${id} user`;
+    const reuslt =this.prismaService.user.findFirst({
+      where:{
+        id
+      },
+      include:{
+        category:true
+      } 
+    })
+    return reuslt
   }
 
   update(id: number, updateUserDto: UpdateUserDto) {
@@ -21,6 +31,6 @@ export class UserService {
   }
 
   remove(id: number) {
-    return `This action removes a #${id} user`;
+    return `This action removes a #$  id} user`;
   }
 }

@@ -6,5 +6,7 @@ export class CreateArticleDto {
     @Length(30,100,{message:"必须大于30个字且小于200个字"})
     @IsNotEmpty({message:"内容不能为空!"})
     content:string
+    @IsNotEmpty({message:"分类必选"})
+    categoryId:number
 }
  
