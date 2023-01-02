@@ -1,9 +1,11 @@
-import { IsEmail, IsNotEmpty } from "class-validator";
+import { IsEmail, IsNotEmpty } from 'class-validator';
+import { IsNotExistsRule } from '../../common/rules/is-not-exits.rule';
 
 export class CreateAuthDto {
-    @IsNotEmpty({message:"用户名不能为空"})
-    @IsEmail({},{message:"用户名必须是邮箱"})
-    email:string
-    @IsNotEmpty({message:"密码不能为空"})
-    password:string
+  @IsNotEmpty({ message: '用户名不能为空' })
+  @IsEmail({}, { message: '用户名必须是邮箱' })
+  @IsNotExistsRule('user', { message: '该用户已存在' })
+  email: string;
+  @IsNotEmpty({ message: '密码不能为空' })
+  password: string;
 }
