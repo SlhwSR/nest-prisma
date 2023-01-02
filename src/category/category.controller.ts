@@ -16,7 +16,10 @@ export class CategoryController {
   findAll(@Query() query) {
     return this.categoryService.findAll(query);
   }
-
+  @Get("list/:id")
+  findList(@Param('id') id){
+    return this.categoryService.findList(+id)
+  }
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.categoryService.findOne(+id);

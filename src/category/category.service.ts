@@ -39,7 +39,14 @@ export class CategoryService {
     const total = await this.prismaService.category.count();
     return { data:result,total};
   }
-
+  async findList(userId:number){
+    const result=await this.prismaService.category.findMany({
+      where:{
+        userId
+      }
+    })
+    return result
+  }
   findOne(id: number) {
     return `This action returns a #${id} category`;
   }
