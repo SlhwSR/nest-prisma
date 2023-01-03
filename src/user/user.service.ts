@@ -5,7 +5,7 @@ import { UpdateUserDto } from './dto/update-user.dto';
 
 @Injectable()
 export class UserService {
-  constructor(private prismaService:PrismaService){}
+  constructor(private prismaService: PrismaService) {}
   create(createUserDto: CreateUserDto) {
     return 'This action adds a new user';
   }
@@ -14,16 +14,43 @@ export class UserService {
     return `This action returns all user`;
   }
 
-  findOne(id: number) {
-    const reuslt =this.prismaService.user.findFirst({
-      where:{
-        id
+  async findOne(id: number) {
+    const reuslt = await this.prismaService.user.findFirst({
+      where: {
+        id,
+      },
+      include: {
+        category: {
+          include: {
+            article: true,
+          },
+        },
+      },
+    });
+    return reuslt;
+  }
+  async findOneUserArticle(id: number) {
+    const result = await this.prismaService.article.findMany({
+      where: {
+        category: {
+          user: {
+            id,
+          },
+        },
       },
       include:{
         category:true
-      } 
-    })
-    return reuslt
+      }
+      // include: {
+      //   category: {
+      //     include: {
+      //       article:true
+      //     },
+      //   },
+      // },
+    });
+    const total = result.length;
+    return { data: [...result, total] };
   }
 
   update(id: number, updateUserDto: UpdateUserDto) {

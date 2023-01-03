@@ -7,9 +7,11 @@ import { PrismaService } from 'src/prisma/prisma.service';
 export class ArticleService {
   constructor(private PrismaService: PrismaService) {}
   async create(createArticleDto: CreateArticleDto) {
-    const res = await this.PrismaService.article.create({
+     const res = await this.PrismaService.article.create({
       data: {
-        ...createArticleDto,
+        title:createArticleDto.title,
+        content:createArticleDto.content,
+        categoryId:createArticleDto.categoryId
       },
     });
     return res;
@@ -19,13 +21,20 @@ export class ArticleService {
     const result = await this.PrismaService.article.findMany({
       take: +page?.pageSize ? +page?.pageSize : 10,
       skip: (page?.current - 1) * page?.pageSize,
+      include:{
+        category:{
+          include:{
+            user:true
+          }
+        }
+      }
       // orderBy: {
       //   id: 'asc',
       //   // content:"asc",    
       // },
     });
     const total = await this.PrismaService.article.count();
-    return { data: [...result], total };
+    return { data: [...result], total }; 
   }
   async findOne(id: number) {
     const result = await this.PrismaService.article.findFirst({
@@ -42,11 +51,22 @@ export class ArticleService {
           contains: title,
         },
       },
-      orderBy: {
-        id: 'asc',
+      include:{
+        category:{
+          include:{
+            user:true
+          }
+        }
       },
     });
-    return result;
+    const total=await this.PrismaService.article.count({
+      where: {
+        title: {
+          contains: title,
+        },
+      },
+    })
+    return {data:[...result],total};
   }
   async update(id: number, updateArticleDto: UpdateArticleDto) {
     const result = await this.PrismaService.article.update({
@@ -54,9 +74,12 @@ export class ArticleService {
         id,
       },
       data: {
-        ...updateArticleDto,
+        title:updateArticleDto.title,
+        content:updateArticleDto.content,
+        categoryId:+updateArticleDto.categoryId,
+        updatedAt:new Date()
       },
-    });
+    }); 
     return result;
   }
 

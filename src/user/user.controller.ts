@@ -20,4 +20,8 @@ export class UserController {
   getDetail(@Param('id') id){
     return this.userService.findOne(+id)
   } 
+  @Get("article/:id")
+  getUserArticle(@Param('id') id){
+    return this.userService.findOneUserArticle(+id)
+  }
 }    
