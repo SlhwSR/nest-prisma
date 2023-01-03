@@ -1,18 +1,11 @@
 import {
   Controller,
   Ip,
-  MethodNotAllowedException,
   Post,
-  Req,
   UploadedFile,
-  UseInterceptors,
 } from '@nestjs/common';
-import { FileInterceptor } from '@nestjs/platform-express';
 import {
-  Upload,
-  fileFilter,
   Image,
-  Document,
   Markdown,
 } from './decorator/upload.decorator';
 
@@ -24,16 +17,14 @@ export class UploadController {
     return file;
   }
   @Post('document')
-  // @Document()
   @Markdown('file', ['image', 'pdf'])
   uploadDoc(@UploadedFile() file: Express.Multer.File, @Ip() ip) {
-    // console.log(ip);
     return file;
   }
   @Post('editorPic')
   @Image()
+  //富文本上传图片。    
   uploadEditor(@UploadedFile() file: Express.Multer.File) {
-    // console.log(file);
     return {
       errno: 0,
       data: {
