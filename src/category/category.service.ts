@@ -55,7 +55,12 @@ export class CategoryService {
     return `This action updates a #${id} category`;
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} category`;
+  async remove(id: number) {
+    const result=await this.prismaService.category.delete({
+      where:{
+        id
+      }
+    })
+    return {code:200,message:"删除成功"}
   }
 }
