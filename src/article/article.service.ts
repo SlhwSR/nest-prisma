@@ -66,7 +66,7 @@ export class ArticleService {
         },
       },
     })
-    return {data:[...result],total};
+    return {data:[...result],total:total};
   }
   async update(id: number, updateArticleDto: UpdateArticleDto) {
     const result = await this.PrismaService.article.update({

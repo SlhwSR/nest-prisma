@@ -50,8 +50,8 @@ export class UserService {
       // },
     });
     const total = result.length;
-    return { data: [...result, total] };
-  }
+    return { data: [...result],total };
+  }z
 
   async updateAvatar(id: number, updateUserDto: UpdateUserDto) {
     const result =await this.prismaService.user.update({
