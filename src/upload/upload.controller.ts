@@ -7,6 +7,7 @@ import {
 import {
   Image,
   Markdown,
+  Video,
 } from './decorator/upload.decorator';
 
 @Controller('upload')
@@ -31,5 +32,16 @@ export class UploadController {
         url: 'http://localhost:3000/uploads/' + file.filename,
       },
     }; 
+  }
+  @Post("video")
+  @Video()
+  uploadVideo(@UploadedFile() file:Express.Multer.File){
+    console.log(file);
+    return {
+      errno:0,
+      data:{
+        url:"http://localhost:3000/uploads/"+file.filename
+      }
+    }
   }
 }

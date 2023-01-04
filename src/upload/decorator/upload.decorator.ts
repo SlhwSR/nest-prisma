@@ -39,3 +39,11 @@ export function Markdown(file='file',type:string[]=['pdf']){
         fileFilter:fileFilter(type)
     })
 }
+export function Video(file="file"){
+    return Upload(file,{
+        limits:{
+            fileSize:Math.pow(1024,2)*12
+        }, 
+        fileFilter:fileFilter(["video"])
+    })
+}
