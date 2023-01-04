@@ -1,4 +1,4 @@
-import { IsEmail, IsNotEmpty } from 'class-validator';
+import { IsEmail, IsNotEmpty, IsOptional } from 'class-validator';
 import { IsNotExistsRule } from '../../common/rules/is-not-exits.rule';
 
 export class CreateAuthDto {
@@ -8,4 +8,7 @@ export class CreateAuthDto {
   email: string;
   @IsNotEmpty({ message: '密码不能为空' })
   password: string;
+  @IsOptional()
+  avatar:string
 }
+ 

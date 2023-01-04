@@ -24,4 +24,8 @@ export class UserController {
   getUserArticle(@Param('id') id){
     return this.userService.findOneUserArticle(+id)
   }
+  @Patch("avatar/:id")
+  updateAvatar(@Param('id') id,@Body() body){
+    return this.userService.updateAvatar(+id,body)
+  }
 }    

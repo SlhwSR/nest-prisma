@@ -9,27 +9,31 @@ datasource db {
   provider = "mysql"
   url      = env("DATABASE_URL")
 }
-model article{
-  id Int @id @default(autoincrement()) @db.UnsignedInt
-  title String
-  content String @db.Text
-  category category @relation(fields: [categoryId], references: [id], onDelete: Cascade)
-  categoryId Int @db.UnsignedInt
+
+model article {
+  id         Int      @id @default(autoincrement()) @db.UnsignedInt
+  title      String
+  content    String   @db.Text
+  category   category @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+  categoryId Int      @db.UnsignedInt
   createdAt  DateTime @default(now())
   updatedAt  DateTime @updatedAt
 }
-model user{ 
-  id Int @id @default(autoincrement()) @db.UnsignedInt
-  email String @unique
+
+model user {
+  id       Int        @id @default(autoincrement()) @db.UnsignedInt
+  email    String     @unique
   password String
   role     String?
+  avatar   String?
   category category[]
-}  
-model category{
-  id Int @id @default(autoincrement()) @db.UnsignedInt
-  name String
-  cover String 
+}
+
+model category {
+  id      Int       @id @default(autoincrement()) @db.UnsignedInt
+  name    String
+  cover   String
   article article[]
-  user user @relation(fields: [userId],references: [id],onDelete: Cascade)
-  userId Int @db.UnsignedInt
+  user    user      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId  Int       @db.UnsignedInt
 }

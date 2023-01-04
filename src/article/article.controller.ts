@@ -26,7 +26,7 @@ export class ArticleController {
   @Get()
   findAll(@Query() Page) {
     return this.articleService.findAll(Page);
-  }
+  } 
   @Get('findSome')
   findSome(@Query('title') content: string) {
     return this.articleService.findSome(content);
