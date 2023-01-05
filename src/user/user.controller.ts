@@ -28,4 +28,8 @@ export class UserController {
   updateAvatar(@Param('id') id,@Body() body){
     return this.userService.updateAvatar(+id,body)
   }
+  @Patch("modify/password/:id")
+   updatePassword(@Param('id') id,@Body() Body){
+    return this.userService.modify(+id,Body)
+   }
 }    
