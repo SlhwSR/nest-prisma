@@ -27,8 +27,24 @@ model user {
   role     String?
   avatar   String?
   category category[]
+  videoBatch videocategory[]
 }
-
+model videocategory{
+   id Int @id @default(autoincrement()) @db.UnsignedInt
+   name String
+   user user @relation(fields: [userId],references: [id],onDelete: Cascade)
+   userId Int @db.UnsignedInt
+   videos video[]
+}
+model video{
+  id Int @id @default(autoincrement()) @db.UnsignedInt
+  poster String
+  url String
+  videoCategory videocategory @relation(fields: [videoCategoryId],references: [id],onDelete: Cascade)
+  videoCategoryId Int @db.UnsignedInt
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+}
 model category {
   id      Int       @id @default(autoincrement()) @db.UnsignedInt
   name    String

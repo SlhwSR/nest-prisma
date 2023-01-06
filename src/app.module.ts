@@ -10,12 +10,13 @@ import { PrismaService } from './prisma/prisma.service';
 import { PrismaModule } from './prisma/prisma.module';
 import { UploadModule } from './upload/upload.module';
 import { CategoryModule } from './category/category.module';
+import { VideoModule } from './video/video.module';
 
 @Module({
   imports: [ArticleModule, AuthModule,ConfigModule.forRoot({
     load:[],
     isGlobal:true
-  }), UserModule, PrismaModule, UploadModule, CategoryModule],
+  }), UserModule, PrismaModule, UploadModule, CategoryModule, VideoModule],
   controllers: [AppController],
   providers: [AppService, PrismaService],
 })
