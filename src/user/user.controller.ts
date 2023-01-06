@@ -23,11 +23,11 @@ export class UserController {
   @Get("article/:id")
   getUserArticle(@Param('id') id){
     return this.userService.findOneUserArticle(+id)
-  }
+  } 
   @Patch("avatar/:id")
   updateAvatar(@Param('id') id,@Body() body){
     return this.userService.updateAvatar(+id,body)
-  }
+  } 
   @Patch("modify/password/:id")
    updatePassword(@Param('id') id,@Body() Body){
     return this.userService.modify(+id,Body)

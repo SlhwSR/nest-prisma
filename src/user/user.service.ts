@@ -51,8 +51,6 @@ export class UserService {
     const total = result.length;
     return { data: [...result], total };
   }
-  z;
-
   async updateAvatar(id: number, updateUserDto: UpdateUserDto) {
     const result = await this.prismaService.user.update({
       where: {
@@ -64,7 +62,10 @@ export class UserService {
     });
     return result;
   }
-  async modify(id: number, body:{newPassword:string,oldPassword:string,confirmPassword:string}) {
+  async modify(
+    id: number,
+    body: { newPassword: string; oldPassword: string; confirmPassword: string },
+  ) {
     const result = await this.prismaService.user.findUnique({
       where: {
         id,
@@ -73,29 +74,29 @@ export class UserService {
     if (!result) throw new BadRequestException('不存在该用户！');
     console.log(body.oldPassword);
     console.log(result.password);
-    const isture = await verify(result.password,body.oldPassword);
+    const isture = await verify(result.password, body.oldPassword);
     console.log(isture);
-  
-    if(!isture) throw new BadRequestException("旧密码不正确!")
-    if(body.newPassword!==body.confirmPassword) throw new BadRequestException("新密码确认不相同！")
-    const newpassword= await hash(body.newPassword)
-    await this.prismaService.user.update({
-      where:{
-        id
-      },
-      data:{
-        password:newpassword
-      }
-    })
-    return {
-      data:{
-        code:200,
-        meessage:"修改成功"
-      }
-    }
 
+    if (!isture) throw new BadRequestException('旧密码不正确!');
+    if (body.newPassword !== body.confirmPassword)
+      throw new BadRequestException('新密码确认不相同！');
+    const newpassword = await hash(body.newPassword);
+    await this.prismaService.user.update({
+      where: {
+        id,
+      },
+      data: {
+        password: newpassword,
+      },
+    });
+    return {
+      data: {
+        code: 200,
+        meessage: '修改成功',
+      },
+    };
   }
   remove(id: number) {
-    return `This action removes a #$  id} user`;
-  }
+    return `This action removes a #${id} user`;
+  } 
 }
