@@ -13,6 +13,7 @@ import {
 import { Request } from 'express';
 import { Auth } from 'src/auth/decorator/auth.decoator';
 import { ArticleService } from './article.service';
+import { CommentArticleDto } from './dto/comment-article.dto';
 import { CreateArticleDto } from './dto/create-article.dto';
 import { UpdateArticleDto } from './dto/update-article.dto';
 @Auth()
@@ -47,5 +48,14 @@ export class ArticleController {
   @Get('personal')
   getComt(@Req() req:Request){
     return req.user
+  }
+  //--------------------评论
+  @Post("comment")
+  addOneComment(@Body() Body:CommentArticleDto){
+     return this.articleService.addOneComment(Body)
+  }
+  @Get("comment/:id")
+  getComment(@Param("id") id){
+     return this.articleService.getCommentList(+id)
   }
 }

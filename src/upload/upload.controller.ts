@@ -14,13 +14,13 @@ import {
 export class UploadController {
   @Post('image')
   @Image()
-  uploadImage(@UploadedFile() file: Express.Multer.File) {
+  uploadImage(@UploadedFile() file: Express.Multer.File) { 
     return file;
   }
   @Post('document')
   @Markdown('file', ['image', 'pdf'])
   uploadDoc(@UploadedFile() file: Express.Multer.File, @Ip() ip) {
-    return file;
+    return file; 
   }
   @Post('editorPic')
   @Image()

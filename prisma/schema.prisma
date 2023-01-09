@@ -11,40 +11,69 @@ datasource db {
 }
 
 model article {
-  id         Int      @id @default(autoincrement()) @db.UnsignedInt
+  id         Int       @id @default(autoincrement()) @db.UnsignedInt
   title      String
-  content    String   @db.Text
-  category   category @relation(fields: [categoryId], references: [id], onDelete: Cascade)
-  categoryId Int      @db.UnsignedInt
-  createdAt  DateTime @default(now())
-  updatedAt  DateTime @updatedAt
+  content    String    @db.Text
+  category   category  @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+  categoryId Int       @db.UnsignedInt
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
+  comment    comment[]
 }
 
 model user {
-  id       Int        @id @default(autoincrement()) @db.UnsignedInt
-  email    String     @unique
-  password String
-  role     String?
-  avatar   String?
-  category category[]
+  id         Int             @id @default(autoincrement()) @db.UnsignedInt
+  email      String          @unique
+  password   String
+  role       String?
+  avatar     String?
+  category   category[]
   videoBatch videocategory[]
+  comments   comment[]
+  reply      Reply[]
 }
-model videocategory{
-   id Int @id @default(autoincrement()) @db.UnsignedInt
-   name String
-   user user @relation(fields: [userId],references: [id],onDelete: Cascade)
-   userId Int @db.UnsignedInt
-   videos video[]
+
+model comment {
+  id        Int      @id @default(autoincrement()) @db.UnsignedInt
+  createAt  DateTime @default(now())
+  content   String   @db.Text
+  updateAt  DateTime @updatedAt
+  userInfo  user     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId    Int      @db.UnsignedInt
+  article   article?  @relation(fields: [articleId], references: [id], onDelete: Cascade)
+  articleId Int?      @db.UnsignedInt
+  Reply     Reply[]
 }
-model video{
-  id Int @id @default(autoincrement()) @db.UnsignedInt
-  poster String
-  url String
-  videoCategory videocategory @relation(fields: [videoCategoryId],references: [id],onDelete: Cascade)
-  videoCategoryId Int @db.UnsignedInt
-  createdAt  DateTime @default(now())
-  updatedAt  DateTime @updatedAt
+
+model Reply {
+  id           Int      @id @default(autoincrement()) @db.UnsignedInt
+  comment      comment  @relation(fields: [commentId], references: [id], onDelete: Cascade)
+  replyContent String
+  createAt     DateTime @default(now())
+  updateAt     DateTime @updatedAt
+  user         user     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId       Int      @db.UnsignedInt
+  commentId    Int      @db.UnsignedInt
 }
+
+model videocategory {
+  id     Int     @id @default(autoincrement()) @db.UnsignedInt
+  name   String
+  user   user    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId Int     @db.UnsignedInt
+  videos video[]
+}
+
+model video {
+  id              Int           @id @default(autoincrement()) @db.UnsignedInt
+  poster          String
+  url             String
+  videoCategory   videocategory @relation(fields: [videoCategoryId], references: [id], onDelete: Cascade)
+  videoCategoryId Int           @db.UnsignedInt
+  createdAt       DateTime      @default(now())
+  updatedAt       DateTime      @updatedAt
+}
+
 model category {
   id      Int       @id @default(autoincrement()) @db.UnsignedInt
   name    String

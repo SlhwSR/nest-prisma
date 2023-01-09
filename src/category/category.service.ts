@@ -17,7 +17,7 @@ export class CategoryService {
       });
       return {
         data: {
-          message: '新增成功', 
+          message: '新增成功',
           code: 200,
         },
       };
@@ -32,35 +32,49 @@ export class CategoryService {
     //   skip: (page?.current - 1) * page?.pageSize,
     // });
     const result = await this.prismaService.category.findMany({
-      include:{
-       user:true 
-      }
+      include: {
+        user: true,
+      },
     });
     const total = await this.prismaService.category.count();
-    return { data:result,total};
+    return { data: result, total };
   }
-  async findList(userId:number){
-    const result=await this.prismaService.category.findMany({
-      where:{
-        userId
-      }
-    })
-    return result
+  async findList(userId: number) {
+    const result = await this.prismaService.category.findMany({
+      where: {
+        userId,
+      },
+    });
+    return result;
   }
   findOne(id: number) {
     return `This action returns a #${id} category`;
   }
 
-  update(id: number, updateCategoryDto: UpdateCategoryDto) {
-    return `This action updates a #${id} category`;
+  async update(id: number, updateCategoryDto: UpdateCategoryDto) {
+    await this.prismaService.category.update({
+      where: {
+        id,
+      },
+      data: {
+        cover: updateCategoryDto.cover,
+        name: updateCategoryDto.name,
+      },
+    });
+    return {
+      data: {
+        code: 200,
+        message: '更新成功',
+      },
+    };
   }
 
   async remove(id: number) {
-    const result=await this.prismaService.category.delete({
-      where:{
-        id
-      }
-    })
-    return {code:200,message:"删除成功"}
+    const result = await this.prismaService.category.delete({
+      where: {
+        id,
+      },
+    });
+    return { code: 200, message: '删除成功' };
   }
 }
