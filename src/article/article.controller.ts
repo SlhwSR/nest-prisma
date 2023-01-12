@@ -66,6 +66,11 @@ export class ArticleController {
   replay(@Body() Body:ReplyDto){
     return this.articleService.addOneReply(Body)
   }
+  //回去某条评论
+  @Post("comment/reply/:id")
+  ReplyOne(@Param('id') id,@Body() Body){
+     return this.articleService.replySomeOne(+id,Body)
+  }
   @Post("dianzan")
   dianzan(@Body() body:dianzanDto){
     return this.articleService.dianzan(body)
