@@ -1,9 +1,11 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { CreateArticleDto } from './dto/create-article.dto';
 import { UpdateArticleDto } from './dto/update-article.dto';
 import { PrismaClient } from '@prisma/client';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { CommentArticleDto } from './dto/comment-article.dto';
+import { ReplyDto } from './dto/reply.dto';
+import { dianzanDto } from './dto/dianzan.dto';
 @Injectable()
 export class ArticleService {
   constructor(private PrismaService: PrismaService) {}
@@ -90,13 +92,13 @@ export class ArticleService {
     });
     return result;
   }
-  //-------------
+  //-------------评论
   async addOneComment(comment: CommentArticleDto) {
     await this.PrismaService.comment.create({
       data: {
-        articleId: comment.articleId,
+        articleId: +comment.articleId,
         content: comment.content,
-        userId: comment.userId,
+        userId: +comment.userId,
       },
     });
     return {
@@ -112,11 +114,71 @@ export class ArticleService {
         id,
       },
       include: {
-        comment: true,
+        comment: {
+          include: {
+            userInfo: true,
+            Reply: {
+              include: {
+                user: true,
+              },
+            },
+            likeList:true
+          },
+        },
       },
     });
     return {
       data: [...result],
     };
+  }
+  //--------回复
+  async addOneReply(replyDto: ReplyDto) {
+    const result = await this.PrismaService.reply.create({
+      data: {
+        userId: +replyDto.userId,
+        commentId: +replyDto.commentId,
+        replyContent: replyDto.replyContent,
+      },
+    });
+    return {
+      data: {
+        message: '回复成功',
+        code: 200,
+      },
+    };
+  }
+
+  //点赞
+  async dianzan(body:dianzanDto) {
+    const result = await this.PrismaService.likeList.create({
+      data: {
+        commentId:+ body.commentId,
+        userId: +body.userId,
+      },
+    });
+    // await this.PrismaService.comment.update({
+    //   where: {
+    //     id: +body.commentId,
+    //   },
+    //   data: {
+    //     like: like + 1,
+    //   },
+    // });
+    return {
+      data: {
+        message: '点赞成功!',
+        code: 200,
+      },
+    };
+  }
+  async replySomeOne(id:number,body){
+    await this.PrismaService.reply.update({
+      where:{
+        id
+      },
+      data:{
+        replyName:body.replay.name
+      }
+    })
   }
 }
