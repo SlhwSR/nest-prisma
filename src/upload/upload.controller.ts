@@ -1,47 +1,43 @@
-import {
-  Controller,
-  Ip,
-  Post,
-  UploadedFile,
-} from '@nestjs/common';
-import {
-  Image,
-  Markdown,
-  Video,
-} from './decorator/upload.decorator';
+import { Controller, Ip, Post, UploadedFile } from '@nestjs/common';
+import { url } from '../utils/url';
+import { Image, Markdown, Video } from './decorator/upload.decorator';
 
 @Controller('upload')
 export class UploadController {
   @Post('image')
   @Image()
-  uploadImage(@UploadedFile() file: Express.Multer.File) { 
-    return file;
+  uploadImage(@UploadedFile() file: Express.Multer.File) {
+    return {
+      url: url(file.path),
+    };
   }
   @Post('document')
   @Markdown('file', ['image', 'pdf'])
   uploadDoc(@UploadedFile() file: Express.Multer.File, @Ip() ip) {
-    return file; 
+    return {
+      url: url(file.path),
+    };
   }
   @Post('editorPic')
   @Image()
-  //富文本上传图片。    
+  //富文本上传图片。
   uploadEditor(@UploadedFile() file: Express.Multer.File) {
     return {
       errno: 0,
       data: {
-        url: 'http://localhost:3000/uploads/' + file.filename,
+        url: url(file.path),
       },
-    }; 
+    };
   }
-  @Post("video")
+  @Post('video')
   @Video()
-  uploadVideo(@UploadedFile() file:Express.Multer.File){
+  uploadVideo(@UploadedFile() file: Express.Multer.File) {
     console.log(file);
     return {
-      errno:0,
-      data:{
-        url:"http://localhost:3000/uploads/"+file.filename
-      }
-    }
+      errno: 0,
+      data: {
+        url: url(file.path),
+      },
+    };
   }
 }

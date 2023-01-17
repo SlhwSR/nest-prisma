@@ -27,7 +27,6 @@ import * as redisStores from 'cache-manager-redis-store';
       // store: redisStores,
     }),
     // Cache
-
     UserModule,
     PrismaModule,
     UploadModule,
@@ -38,3 +37,4 @@ import * as redisStores from 'cache-manager-redis-store';
   providers: [AppService, PrismaService],
 })
 export class AppModule {}
+ 

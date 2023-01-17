@@ -4,7 +4,6 @@ import { ClassSerializerInterceptor, ValidationPipe } from '@nestjs/common';
 import { Auth } from './auth/decorator/auth.decoator';
 import { AuthGuard } from '@nestjs/passport';
 import { NestExpressApplication } from '@nestjs/platform-express';
-import Validate from './common/validate';
 async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule);
   app.useStaticAssets('uploads', { prefix: '/uploads' });
