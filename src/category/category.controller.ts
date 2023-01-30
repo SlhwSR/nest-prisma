@@ -21,7 +21,6 @@ export class CategoryController {
   create(@Body() createCategoryDto: CreateCategoryDto) {
     return this.categoryService.create(createCategoryDto);
   }
-  
   @Get()
   findAll(@Query() query) {
     return this.categoryService.findAll(query);
@@ -36,7 +35,7 @@ export class CategoryController {
   }
   @Patch(':id')
   update(
-    @Param('id') id: string, 
+    @Param('id') id: string,
     @Body() updateCategoryDto: UpdateCategoryDto,
   ) {
     return this.categoryService.update(+id, updateCategoryDto);

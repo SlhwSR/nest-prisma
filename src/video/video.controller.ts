@@ -1,4 +1,13 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, Query } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+  Query,
+} from '@nestjs/common';
 import { VideoService } from './video.service';
 import { CreateVideoDto } from './dto/create-video.dto';
 import { UpdateVideoDto } from './dto/update-video.dto';
@@ -12,15 +21,15 @@ export class VideoController {
   create(@Body() createVideoDto: CreateVideoDto) {
     return this.videoService.create(createVideoDto);
   }
-  @Post("category")
-  createCategory(@Body() body:CreateCategoryVideoDto){
-    return this.videoService.createCategory(body)
+  @Post('category')
+  createCategory(@Body() body: CreateCategoryVideoDto) {
+    return this.videoService.createCategory(body);
   }
-  @Get("category")
-  getVideoCategory(){
-    return this.videoService.getCategory()
+  @Get('category')
+  getVideoCategory() {
+    return this.videoService.getCategory();
   }
-  @Get("all")
+  @Get('all')
   findAll() {
     return this.videoService.findAll();
   }

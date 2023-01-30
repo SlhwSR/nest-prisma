@@ -4,8 +4,7 @@ import { Role } from '../enum';
 import { RoleGuard } from '../guards/role/role.guard';
 
 export function Auth(...roles: Role[]) {
-  console.log(roles);
-
+  // console.log(roles);
   return applyDecorators(
     SetMetadata('roles', roles),
     UseGuards(AuthGuard('jwt'), RoleGuard),
